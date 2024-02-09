@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %} BillingApp - Firma ta {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        {% for company in your_company %}
+            <h2>Datele despre firma dumneavoastra:</h2>
+            <p>Denumire: {{ company.nume }}</p>
+            <p>CUI: {{ company.cod_fiscal }}</p>
+            <p>Regim TVA: {{ company.tva }}</p>
+            <p>Nr. Inregistrare: {{ company.cod_onrc }}</p>
+
+            {% if company.address_other_info == None %}
+            <p>Adresa: judetul {{ company.judet }}, loc. {{ company.localitate }}, str. {{ company.street }}, nr. {{ company.street_no }}</p>
+            {% else %}
+            <p>Adresa: judetul {{ company.judet }}, loc. {{ company.localitate }}, str. {{ company.street }}, nr. {{ company.street_no }}, {{ company.address_other_info }}</p>
+            {% endif %}
+
+            <a href="{% url 'user_company_edit' %}" class="btn btn-outline-secondary btn-sm">Editeaza</a>
+            <a href="{% url 'user_company_delete' %}" onclick="return confirm('Sunteti sigur ca vreti sa stergeti datele?')" class="btn btn-outline-danger btn-sm">Sterge</a>
+        {% empty %}
+            <h2>Va rugam sa introduceti datele despre firma dumneavoastra.</h2>
+            <form method="post" action="{% url 'user_company' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Salvare" class="btn btn-outline-secondary btn-sm">
+                <a href="{% url 'home' %}" class="btn btn-outline-danger btn-sm">Anuleaza</a>
+            </form>
+        {% endfor %}
+    {% else %}
+        <h1>Ups, nu ai voie aici...</h1>
+    {% endif %}
+{% endblock %}

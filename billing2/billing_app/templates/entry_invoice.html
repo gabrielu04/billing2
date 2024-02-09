@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %} BillingApp - Emitere - factura intrare {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <h2>Completati datele facturii de intrare.</h2>
+        <form method="post" action="{% url 'entry_invoice' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Salveaza" class="btn btn-outline-secondary btn-sm">
+            <a href="{% url 'home' %}" class="btn btn-outline-danger btn-sm">Anuleaza</a>
+        </form>
+    {% else %}
+        <h1>Ups, nu ai voie aici...</h1>
+    {% endif %}
+{% endblock %}

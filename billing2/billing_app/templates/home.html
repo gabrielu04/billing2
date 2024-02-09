@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Bine ati venit pe pagina principala!</h2>
+    {% if request.user.is_authenticated %}
+        <p>EMITERE | VIZUALIZARE | <a href="{%url 'user_company' %}" class ="a_tag">INTREPRINDEREA TA</a></p>
+        <a href="{%url 'logout' %}" class="a_tag">Deconectare</a>
+    {% else %}
+        <a href="{%url 'register' %}" class="a_tag">Inregistrare</a>
+        <a href="{%url 'login' %}" class="a_tag">Autentificare</a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %} BillingApp - Inregistrare {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h2>Inregistrare utilizator nou.</h2>
+    <form method="post" action="{% url 'register' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Inregistrare">
+    </form>
+{% endblock %}
