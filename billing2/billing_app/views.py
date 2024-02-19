@@ -95,9 +95,9 @@ def entry_invoice_view(request):
     # if request.method == "POST":
     #     form = PartnerForm(request.POST)
     #     if form.is_valid():
-    #         obj = form.save()
-    #         pk = obj.pk
-    #         partner = Partners.objects.get(id=pk)
+    #         obj, created = form.save() or Partners.objects.get_or_create(**form.cleaned_data)...https://stackoverflow.com/questions/2297820/django-forms-with-get-or-create
+    #         partner = Partners.objects.get(id=obj.pk)
+    #          MAYBE A TRY AND EXCEPT HERE FOR THE EXISTING M2M RELATIONSHIPS!!!!
     #         partner.user.add(request.user)
     #         return redirect(reverse("home"))
     #

@@ -6,6 +6,8 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import YourCompany, EntryInvoice, Partners
 
+import calculation
+
 
 AuthUserModel = get_user_model()
 
@@ -91,21 +93,39 @@ class DateInputType(forms.DateInput):
 
 # Forms for the entry invoices formset
 class EntryInvoiceForm(forms.ModelForm):
+    class Media:
+        js = ['vat_ammount.js']
+
     class Meta:
         model = EntryInvoice
-        fields = ["series", "number", "date"]
+        fields = ["series", "number", "date", "product_name", "quantity", "unit",
+                  "price", "price_quantity", "vat_rate", "vat_ammount", "total_pay"] #de aduagat si field-urile cu calcule, tva, pret final etc
         labels = {
             "series": _("Serie"),
             "number": _("Nr"),
             "date": _("Data"),
+            "product_name": _("Produs/serviciu"),
+            "quantity": _("Cantitate"),
+            "unit": _("Unitate de masura"),
+            "price": _("Pret"),
+            "price_quantity": _("Pret cantitate"),
+            "vat_rate": _("Cota TVA (%)"),
+            "vat_ammount": _("TVA"),
+            "total_pay": _("Total plata")
         }
         widgets = {
-            "date": DateInputType()
+            "date": DateInputType(),
+            "price_quantity": calculation.FormulaInput('parseFloat(quantity*price).toFixed(2)', attrs={"class": "qp"}),
+            "vat_rate": forms.Select(attrs={"class": "vatr"}),
+            "vat_ammount": forms.NumberInput(attrs={"class": "vata"}),
+            "total_pay": calculation.FormulaInput('parseFloat(price_quantity+vat_ammount).toFixed(2)')
         }
+
 
     def __init__(self, *args, **kwargs):
         self.customer = kwargs.pop("customer", None)
         super(EntryInvoiceForm, self).__init__(*args, **kwargs)
+
 
     def save(self, commit=True):
         instance = super(EntryInvoiceForm, self).save(commit=False)

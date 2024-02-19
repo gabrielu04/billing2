@@ -48,17 +48,20 @@ class PartnerUser(models.Model):
     partner = models.ForeignKey(Partners, on_delete=models.CASCADE)
 
 
-class Products(models.Model):
+class Invoice(models.Model):
     class Meta:
-        db_table = "product"
+        abstract = True
 
-    class VatRate(models.TextChoices):
-        COTA_STANDARD = "19%", "19%"
-        COTA_9 = "9%", "9%"
-        COTA_5 = "5%", "5%"
-        COTA_0 = "0%", "0%"
+    # class VatRate(models.TextChoices):
+    #     COTA_STANDARD = 0.19, 19
+    #     COTA_9 = 0.09, 9
+    #     COTA_5 = 0.05, 5
+    #     COTA_0 = 0, 0
 
-    name = models.CharField(max_length=255, unique=True)
+    series = models.CharField(max_length=5)
+    number = models.IntegerField(unique=True)
+    date = models.DateField()
+    product_name = models.CharField(max_length=255)
     unit = models.CharField(max_length=255)
     price = models.DecimalField(
         max_digits=10,
@@ -75,7 +78,7 @@ class Products(models.Model):
         decimal_places=2,
         default=0.00
     )
-    vat_rate = models.CharField(max_length=3, choices=VatRate.choices)
+    vat_rate = models.FloatField(choices=((0.19, 19), (0.09, 9), (0.05, 5), (0, 0)))
     vat_ammount = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -86,16 +89,7 @@ class Products(models.Model):
         decimal_places=2,
         default=0.00
     )
-# # CALCULAREA SUMELOR AR PUTEA FI FACUTA DIN TEMPLATE SI PASATA IN DB APOI
-
-
-class Invoice(models.Model):
-    class Meta:
-        abstract = True
-
-    series = models.CharField(max_length=5)
-    number = models.IntegerField(unique=True)
-    date = models.DateField()
+    # # CALCULAREA SUMELOR AR PUTEA FI FACUTA DIN TEMPLATE SI PASATA IN DB APOI
 
 
 class EntryInvoice(Invoice):
@@ -104,7 +98,6 @@ class EntryInvoice(Invoice):
 
     customer = models.ForeignKey(YourCompany, on_delete=models.CASCADE)
     supplier = models.ForeignKey(Partners, on_delete=models.CASCADE)
-    lines = models.ManyToManyField(Products, through="Purchase", related_name="purchases")
 
 
 class ExitInvoice(Invoice):
@@ -113,14 +106,3 @@ class ExitInvoice(Invoice):
 
     customer = models.ForeignKey(Partners, on_delete=models.CASCADE)
     supplier = models.ForeignKey(YourCompany, on_delete=models.CASCADE)
-    lines = models.ManyToManyField(Products, through="Sale", related_name="sales")
-
-
-class Purchase(models.Model):
-    invoice = models.ForeignKey(EntryInvoice, on_delete=models.CASCADE)
-    products = models.ForeignKey(Products, on_delete=models.CASCADE)
-
-
-class Sale(models.Model):
-    invoice = models.ForeignKey(ExitInvoice, on_delete=models.CASCADE)
-    products = models.ForeignKey(Products, on_delete=models.CASCADE)

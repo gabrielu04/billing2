@@ -11,6 +11,8 @@
             <input type="submit" value="Salveaza" class="btn btn-outline-secondary btn-sm">
             <a href="{% url 'home' %}" class="btn btn-outline-danger btn-sm">Anuleaza</a>
         </form>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+        {{ form.media }}
     {% else %}
         <h1>Ups, nu ai voie aici...</h1>
     {% endif %}
