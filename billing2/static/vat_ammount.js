@@ -26,3 +26,22 @@ function vatrCalculator() {
     });
     $(".vata input").val(vata);
 }
+
+
+//$(function() {
+//function vatrCalculator() {
+//    var vata = 0
+//    console.log('we are here!!');
+//    tva_selected = $(".vatr").val();
+//    console.log('we are here!!', tva_selected );
+//    vata = 0;
+//
+//    $(".vata").val(vata);
+//}
+//
+//
+//    $(".vatr").on( "change", function() {
+//          console.log('we changed!!');
+//          vatrCalculator();
+//    })
+//});

@@ -89,7 +89,6 @@ class Invoice(models.Model):
         decimal_places=2,
         default=0.00
     )
-    # # CALCULAREA SUMELOR AR PUTEA FI FACUTA DIN TEMPLATE SI PASATA IN DB APOI
 
 
 class EntryInvoice(Invoice):

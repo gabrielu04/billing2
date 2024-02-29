@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %} BillingApp - Firma ta {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <h2>Modifica factura de intrare.</h2>
+            <form method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <b><p>Client</p></b>
+                {% for company in your_company %}
+                    <p>Nume: {{ company.nume }}</p>
+                    <p>CUI: {{ company.cod_fiscal }}</p>
+                    <p>Nr. Inregistrare: {{ company.cod_onrc }}</p>
+                    {% if company.address_other_info == None %}
+                    <p>Adresa: judetul {{ company.judet }}, loc. {{ company.localitate }}, str. {{ company.street }}, nr. {{ company.street_no }}</p>
+                    {% else %}
+                    <p>Adresa: judetul {{ company.judet }}, loc. {{ company.localitate }}, str. {{ company.street }}, nr. {{ company.street_no }}, {{ company.address_other_info }}</p>
+                    {% endif %}
+                {% endfor %}
+                {% if form_2 %}
+                    <b><p>Furnizor</p></b>
+                    {{ form_2.as_p }}
+                    {% endif %}
+                <input type="submit" value="Salveaza" class="btn btn-outline-secondary btn-sm">
+                <a href="{% url 'entry_invoice_list' %}" class="btn btn-outline-danger btn-sm">Anuleaza</a>
+            </form>
+    {% else %}
+        <h1>Ups, nu ai voie aici...</h1>
+    {% endif %}
+{% endblock %}

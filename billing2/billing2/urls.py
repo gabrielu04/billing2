@@ -28,19 +28,35 @@ from billing_app.views import user_company_view
 from billing_app.views import user_company_edit_view
 from billing_app.views import user_company_delete_view
 from billing_app.views import entry_invoice_view
+from billing_app.views import exit_invoice_view
+from billing_app.views import partner_list_view
+from billing_app.views import partner_edit_view
+from billing_app.views import partner_delete_view
+from billing_app.views import partner_add_view
+from billing_app.views import entry_invoice_list_view
+from billing_app.views import entry_invoice_edit_view
+from billing_app.views import entry_invoice_delete_view
 
 
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
     path('', home_view, name="home"),
-    path('emite-factura/', emite_view, name="emite"),
-    path('inregistrare/', register_view, name="register"),
+    path('emite-factura/', emite_view, name='emite'),
+    path('inregistrare/', register_view, name='register'),
     path('autentificare/', login_view, name='login'),
     path('deconectare/', logout_view, name='logout'),
     path('firma-ta/', user_company_view, name='user_company'),
     path('firma-ta/editare/', user_company_edit_view, name='user_company_edit'),
     path('firma-ta/stergere/', user_company_delete_view, name='user_company_delete'),
     path('emitere/intrare/', entry_invoice_view, name='entry_invoice'),
+    path('lista-parteneri/', partner_list_view, name='partners'),
+    path('partener-modificare/<partner_id>', partner_edit_view, name='partner_edit'),
+    path('sterge-partener/<partner_id>', partner_delete_view, name='partner_delete'),
+    path('adauga-partener/', partner_add_view, name='partner_add'),
+    path('emitere/iesire/', exit_invoice_view, name='exit_invoice'),
+    path('facturi/intrare/', entry_invoice_list_view, name='entry_invoice_list'),
+    path('facturi/intrare-modificare/<invoice_id>', entry_invoice_edit_view, name='entry_invoice_edit'),
+    path('facturi/intrare-stergere/<invoice_id>', entry_invoice_delete_view, name='entry_invoice_delete'),
 ]
 
 if settings.DEBUG is True:

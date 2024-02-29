@@ -18,14 +18,14 @@
             {% endif %}
 
             <a href="{% url 'user_company_edit' %}" class="btn btn-outline-secondary btn-sm">Editeaza</a>
-            <a href="{% url 'user_company_delete' %}" onclick="return confirm('Sunteti sigur ca vreti sa stergeti datele?')" class="btn btn-outline-danger btn-sm">Sterge</a>
+            <a href="{% url 'user_company_delete' %}" onclick="return confirm('Sunteti sigur ca doriti sa stergeti datele?')" class="btn btn-outline-danger btn-sm">Sterge</a>
         {% empty %}
             <h2>Va rugam sa introduceti datele despre firma dumneavoastra.</h2>
             <form method="post" action="{% url 'user_company' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <input type="submit" value="Salvare" class="btn btn-outline-secondary btn-sm">
-                <a href="{% url 'home' %}" class="btn btn-outline-danger btn-sm">Anuleaza</a>
+                <a href="{% url 'home' %}" class="btn btn-outline-danger btn-sm">Anulare</a>
             </form>
         {% endfor %}
     {% else %}

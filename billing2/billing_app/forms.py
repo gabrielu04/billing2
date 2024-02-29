@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.utils.html import format_html_join
 from django.utils.translation import gettext_lazy as _
 
-from .models import YourCompany, EntryInvoice, Partners
+from .models import YourCompany, EntryInvoice, ExitInvoice, Partners
 
 import calculation
 
@@ -91,7 +91,7 @@ class DateInputType(forms.DateInput):
     input_type = 'date'
 
 
-# Forms for the entry invoices formset
+# Forms for invoices
 class EntryInvoiceForm(forms.ModelForm):
     class Media:
         js = ['vat_ammount.js']
@@ -99,7 +99,7 @@ class EntryInvoiceForm(forms.ModelForm):
     class Meta:
         model = EntryInvoice
         fields = ["series", "number", "date", "product_name", "quantity", "unit",
-                  "price", "price_quantity", "vat_rate", "vat_ammount", "total_pay"] #de aduagat si field-urile cu calcule, tva, pret final etc
+                  "price", "price_quantity", "vat_rate", "vat_ammount", "total_pay"]
         labels = {
             "series": _("Serie"),
             "number": _("Nr"),
@@ -107,11 +107,11 @@ class EntryInvoiceForm(forms.ModelForm):
             "product_name": _("Produs/serviciu"),
             "quantity": _("Cantitate"),
             "unit": _("Unitate de masura"),
-            "price": _("Pret"),
-            "price_quantity": _("Pret cantitate"),
+            "price": _("Pret unitar"),
+            "price_quantity": _("Valoare"),
             "vat_rate": _("Cota TVA (%)"),
             "vat_ammount": _("TVA"),
-            "total_pay": _("Total plata")
+            "total_pay": _("Total de plata")
         }
         widgets = {
             "date": DateInputType(),
@@ -131,6 +131,47 @@ class EntryInvoiceForm(forms.ModelForm):
         instance = super(EntryInvoiceForm, self).save(commit=False)
         if self.customer:
             instance.customer = self.customer
+        if commit:
+            instance.save()
+        return instance
+
+
+class ExitInvoiceForm(forms.ModelForm):
+    class Meta:
+        model = ExitInvoice
+        fields = ["series", "number", "date", "product_name", "quantity", "unit",
+                  "price", "price_quantity", "vat_rate", "vat_ammount", "total_pay"]
+        labels = {
+            "series": _("Serie"),
+            "number": _("Nr"),
+            "date": _("Data"),
+            "product_name": _("Produs/serviciu"),
+            "quantity": _("Cantitate"),
+            "unit": _("Unitate de masura"),
+            "price": _("Pret unitar"),
+            "price_quantity": _("Valoare"),
+            "vat_rate": _("Cota TVA (%)"),
+            "vat_ammount": _("TVA"),
+            "total_pay": _("Total de plata")
+        }
+        widgets = {
+            "date": DateInputType(),
+            "price_quantity": calculation.FormulaInput('parseFloat(quantity*price).toFixed(2)', attrs={"class": "qp"}),
+            "vat_rate": forms.Select(attrs={"class": "vatr"}),
+            "vat_ammount": forms.NumberInput(attrs={"class": "vata"}),
+            "total_pay": calculation.FormulaInput('parseFloat(price_quantity+vat_ammount).toFixed(2)')
+        }
+
+
+    def __init__(self, *args, **kwargs):
+        self.supplier = kwargs.pop("supplier", None)
+        super(ExitInvoiceForm, self).__init__(*args, **kwargs)
+
+
+    def save(self, commit=True):
+        instance = super(ExitInvoiceForm, self).save(commit=False)
+        if self.supplier:
+            instance.supplier = self.supplier
         if commit:
             instance.save()
         return instance

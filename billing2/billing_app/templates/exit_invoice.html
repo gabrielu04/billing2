@@ -4,12 +4,15 @@
 
 {% block content %}
     {% if request.user.is_authenticated %}
-        <h2>Completati datele facturii de intrare.</h2>
-        <form method="post" action="{% url 'entry_invoice' %}" enctype="multipart/form-data">
+        <h2>Completati datele facturii de iesire.</h2>
+        <form method="post" action="{% url 'exit_invoice' %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-
-            <b><p>Client</p></b>
+            {% if form_2 %}
+                <b><p>Client</p></b>
+                {{ form_2.as_p }}
+            {% endif %}
+            <b><p>Furnizor</p></b>
             {% for company in your_company %}
                 <p>Nume: {{ company.nume }}</p>
                 <p>CUI: {{ company.cod_fiscal }}</p>
@@ -22,15 +25,10 @@
             {% empty %}
                 <p>Completati datele firmei dumneavoastra <a href="{% url 'user_company' %}">aici</a> </p>
             {% endfor %}
-
-            {% if form_2 %}
-            <b><p>Furnizor</p></b>
-            {{ form_2.as_p }}
-            {% endif %}
             <input type="submit" value="Salveaza" class="btn btn-outline-secondary btn-sm">
             <a href="{% url 'home' %}" class="btn btn-outline-danger btn-sm">Anuleaza</a>
         </form>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
         {{ form.media }}
     {% else %}
         <h1>Ups, nu ai voie aici...</h1>
