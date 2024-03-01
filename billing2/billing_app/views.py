@@ -171,7 +171,7 @@ def entry_invoice_edit_view(request, invoice_id):
         partner = Partners.objects.get(id=obj.pk)
         partner.user.add(request.user)
         child = form.save(commit=False)
-        child.customer = obj
+        child.supplier = obj
         child.save()
 
         return redirect(reverse("entry_invoice_list"))
@@ -184,6 +184,52 @@ def entry_invoice_delete_view(request, invoice_id):
     invoice.delete()
 
     return redirect(reverse("entry_invoice_list"))
+
+
+def exit_invoice_list_view(request):
+    try:
+        supplier = YourCompany.objects.get(user=request.user)
+        invoices = ExitInvoice.objects.filter(supplier=supplier)
+    except ObjectDoesNotExist:
+        return render(request, "exit_invoice_list.html")
+
+    if invoices:
+        return render(request, "exit_invoice_list.html", {"invoices": invoices})
+    else:
+        return render(request, "exit_invoice_list.html")
+
+
+def exit_invoice_edit_view(request, invoice_id):
+    your_company = YourCompany.objects.filter(user=request.user)
+    invoice = ExitInvoice.objects.get(pk=invoice_id)
+    partner = invoice.customer
+    form = ExitInvoiceForm(request.POST or None, instance=invoice)
+    form_2 = PartnerForm(request.POST or None, instance=partner)
+    context = {
+        "form": form,
+        "form_2": form_2,
+        "your_company": your_company
+    }
+    if all([form.is_valid(), form_2.is_valid()]):
+        form_2.save(commit=False)
+        obj, created = Partners.objects.get_or_create(**form_2.cleaned_data)
+        partner = Partners.objects.get(id=obj.pk)
+        partner.user.add(request.user)
+        child = form.save(commit=False)
+        child.customer = obj
+        child.save()
+
+        return redirect(reverse("exit_invoice_list"))
+
+    return render(request, "exit_invoice_edit.html", context)
+
+
+def exit_invoice_delete_view(request, invoice_id):
+    invoice = ExitInvoice.objects.get(pk=invoice_id)
+    invoice.delete()
+
+    return redirect(reverse("exit_invoice_list"))
+
 
 
 def partner_list_view(request):

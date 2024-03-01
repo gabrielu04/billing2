@@ -36,6 +36,9 @@ from billing_app.views import partner_add_view
 from billing_app.views import entry_invoice_list_view
 from billing_app.views import entry_invoice_edit_view
 from billing_app.views import entry_invoice_delete_view
+from billing_app.views import exit_invoice_list_view
+from billing_app.views import exit_invoice_edit_view
+from billing_app.views import exit_invoice_delete_view
 
 
 urlpatterns = [
@@ -57,6 +60,9 @@ urlpatterns = [
     path('facturi/intrare/', entry_invoice_list_view, name='entry_invoice_list'),
     path('facturi/intrare-modificare/<invoice_id>', entry_invoice_edit_view, name='entry_invoice_edit'),
     path('facturi/intrare-stergere/<invoice_id>', entry_invoice_delete_view, name='entry_invoice_delete'),
+    path('facturi/iesire/', exit_invoice_list_view, name='exit_invoice_list'),
+    path('facturi/iesire-modificare/<invoice_id>', exit_invoice_edit_view, name='exit_invoice_edit'),
+    path('facturi/iesire-stergere/<invoice_id>', exit_invoice_delete_view, name='exit_invoice_delete'),
 ]
 
 if settings.DEBUG is True:

@@ -4,11 +4,16 @@
 
 {% block content %}
     {% if request.user.is_authenticated %}
-        <h2>Modifica factura de intrare.</h2>
+        <h2>Modifica factura de iesire.</h2>
             <form method="post" action="" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <b><p>Client</p></b>
+                {% if form_2 %}
+                    <b><p>Client</p></b>
+                    {{ form_2.as_p }}
+                {% endif %}
+
+                    <b><p>Furnizor</p></b>
                 {% for company in your_company %}
                     <p>Nume: {{ company.nume }}</p>
                     <p>CUI: {{ company.cod_fiscal }}</p>
@@ -20,12 +25,8 @@
                     {% endif %}
                 {% endfor %}
 
-                {% if form_2 %}
-                    <b><p>Furnizor</p></b>
-                    {{ form_2.as_p }}
-                    {% endif %}
                 <input type="submit" value="Salveaza" class="btn btn-outline-secondary btn-sm">
-                <a href="{% url 'entry_invoice_list' %}" class="btn btn-outline-danger btn-sm">Anuleaza</a>
+                <a href="{% url 'exit_invoice_list' %}" class="btn btn-outline-danger btn-sm">Anuleaza</a>
             </form>
     {% else %}
         <h1>Ups, nu ai voie aici...</h1>

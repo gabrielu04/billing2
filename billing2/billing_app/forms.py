@@ -98,8 +98,8 @@ class EntryInvoiceForm(forms.ModelForm):
 
     class Meta:
         model = EntryInvoice
-        fields = ["series", "number", "date", "product_name", "quantity", "unit",
-                  "price", "price_quantity", "vat_rate", "vat_ammount", "total_pay"]
+        fields = ["series", "number", "date", "product_name", "price", "unit",
+                  "quantity", "price_quantity", "vat_rate", "vat_ammount", "total_pay"]
         labels = {
             "series": _("Serie"),
             "number": _("Nr"),
@@ -139,8 +139,8 @@ class EntryInvoiceForm(forms.ModelForm):
 class ExitInvoiceForm(forms.ModelForm):
     class Meta:
         model = ExitInvoice
-        fields = ["series", "number", "date", "product_name", "quantity", "unit",
-                  "price", "price_quantity", "vat_rate", "vat_ammount", "total_pay"]
+        fields = ["series", "number", "date", "product_name", "price", "unit",
+                  "quantity", "price_quantity", "vat_rate", "vat_ammount", "total_pay"]
         labels = {
             "series": _("Serie"),
             "number": _("Nr"),
