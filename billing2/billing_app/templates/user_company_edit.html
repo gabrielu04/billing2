@@ -4,11 +4,13 @@
 
 {% block content %}
     {% if request.user.is_authenticated %}
-        <h2>Modificare date firma.</h2>
+    <div class="alert alert-dark" role="alert">
+        <i><h2>Modificare date firma.</h2></i>
+    </div>
         <form method="post" action="" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Salveaza" class="btn btn-outline-secondary btn-sm">
+            {{ form|crispy }}
+            <input type="submit" value="Salveaza" class="btn btn-outline-success btn-sm">
             <a href="{% url 'user_company' %}" class="btn btn-outline-danger btn-sm">Anuleaza</a>
         </form>
     {% else %}

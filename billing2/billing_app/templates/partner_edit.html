@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
-{% block title %} BillingApp - Firma ta {% endblock %}
+{% block title %} BillingApp - Modifica partener {% endblock %}
 {% load crispy_forms_tags %}
 
 {% block content %}
     {% if request.user.is_authenticated %}
-        <h2>Modifica partener.</h2>
+        <div class="alert alert-dark" role="alert">
+        <i><h2>Modifica partener.</h2></i>
+        </div>
             <form method="post" action="" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" value="Salveaza" class="btn btn-outline-secondary btn-sm">
+                {{ form|crispy }}
+                <input type="submit" value="Salveaza" class="btn btn-outline-success btn-sm">
                 <a href="{% url 'partners' %}" class="btn btn-outline-danger btn-sm">Anuleaza</a>
             </form>
     {% else %}

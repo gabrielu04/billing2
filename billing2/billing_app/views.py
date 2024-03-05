@@ -13,10 +13,6 @@ def home_view(request):
     return render(request, "home.html")
 
 
-def emite_view(request):
-    return render(request, "emite.html")
-
-
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -84,15 +80,17 @@ def user_company_delete_view(request):
 
 
 def entry_invoice_view(request):
-    form = EntryInvoiceForm()
-    form_2 = PartnerForm()
-    your_company = YourCompany.objects.filter(user=request.user)
-    context = {
-        "form": form,
-        "form_2": form_2,
-        "your_company": your_company
-    }
-    if request.method == "POST":
+    if request.method == "GET":
+        form = EntryInvoiceForm()
+        form_2 = PartnerForm()
+        your_company = YourCompany.objects.filter(user=request.user)
+        context = {
+            "form": form,
+            "form_2": form_2,
+            "your_company": your_company
+        }
+        return render(request, "entry_invoice.html", context)
+    else:
         customer = YourCompany.objects.get(user=request.user)
         form = EntryInvoiceForm(request.POST, customer=customer)
         form_2 = PartnerForm(request.POST)
@@ -109,19 +107,19 @@ def entry_invoice_view(request):
 
             return redirect(reverse("home"))
 
-    return render(request, "entry_invoice.html", context)
-
 
 def exit_invoice_view(request):
-    form = ExitInvoiceForm()
-    form_2 = PartnerForm()
-    your_company = YourCompany.objects.filter(user=request.user)
-    context = {
-        "form": form,
-        "form_2": form_2,
-        "your_company": your_company
-    }
-    if request.method == "POST":
+    if request.method == "GET":
+        form = ExitInvoiceForm()
+        form_2 = PartnerForm()
+        your_company = YourCompany.objects.filter(user=request.user)
+        context = {
+            "form": form,
+            "form_2": form_2,
+            "your_company": your_company
+        }
+        return render(request, "exit_invoice.html", context)
+    else:
         supplier = YourCompany.objects.get(user=request.user)
         form = ExitInvoiceForm(request.POST, supplier=supplier)
         form_2 = PartnerForm(request.POST)
@@ -137,8 +135,6 @@ def exit_invoice_view(request):
             child.save()
 
             return redirect(reverse("home"))
-
-    return render(request, "exit_invoice.html", context)
 
 
 def entry_invoice_list_view(request):
@@ -229,7 +225,6 @@ def exit_invoice_delete_view(request, invoice_id):
     invoice.delete()
 
     return redirect(reverse("exit_invoice_list"))
-
 
 
 def partner_list_view(request):

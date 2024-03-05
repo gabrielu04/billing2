@@ -94,7 +94,7 @@ class DateInputType(forms.DateInput):
 # Forms for invoices
 class EntryInvoiceForm(forms.ModelForm):
     class Media:
-        js = ['vat_ammount.js']
+        js = ['tva.js']
 
     class Meta:
         model = EntryInvoice
@@ -137,6 +137,8 @@ class EntryInvoiceForm(forms.ModelForm):
 
 
 class ExitInvoiceForm(forms.ModelForm):
+    class Media:
+        js = ['tva.js']
     class Meta:
         model = ExitInvoice
         fields = ["series", "number", "date", "product_name", "price", "unit",

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Bine ati venit pe pagina principala!</h2>
+
     {% if request.user.is_authenticated %}
+    <div class="text-bg-success p-1">
         <div class="dropdown">
           <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             EMITE
@@ -18,14 +19,23 @@
             <li><a class="dropdown-item" href="{%url 'exit_invoice_list' %}">Facturi de iesire</a></li>
               <li><a class="dropdown-item" href="{%url 'partners' %}">Parteneri</a></li>
           </ul>
-       <div>
-        <a href="{%url 'user_company' %}" class ="a_tag">INTREPRINDEREA TA</a>
+        </div>
+     </div>
+    <br>
+    <div class="container text-center">
+       <div class="btn-group btn-group-lg text-" role="group">
+        <a href="{%url 'user_company' %}" type="button" class="btn btn-outline-success btn-lg">Intreprinderea ta</a>
+        <a href="{%url 'logout' %}" type="button" class="btn btn-outline-danger btn-lg">Deconectare</a>
        </div>
-       <div>
-        <a href="{%url 'logout' %}" class="a_tag">Deconectare</a>
-       </div>
+    </div>
+
     {% else %}
-        <a href="{%url 'register' %}" class="a_tag">Inregistrare</a>
-        <a href="{%url 'login' %}" class="a_tag">Autentificare</a>
+    <div class="container text-center">
+        <div class="alert alert-dark" role="alert">
+            <h2>Bine ati venit pe pagina principala!</h2>
+        </div>
+        <a href="{%url 'register' %}" type="button" class="btn btn-outline-secondary btn-lg">Inregistrare</a>
+        <a href="{%url 'login' %}" type="button" class="btn btn-outline-secondary btn-lg">Autentificare</a>
+    </div>
     {% endif %}
 {% endblock %}

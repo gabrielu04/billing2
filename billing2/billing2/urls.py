@@ -19,7 +19,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from billing_app.views import emite_view
 from billing_app.views import home_view
 from billing_app.views import login_view
 from billing_app.views import logout_view
@@ -44,7 +43,6 @@ from billing_app.views import exit_invoice_delete_view
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
     path('', home_view, name="home"),
-    path('emite-factura/', emite_view, name='emite'),
     path('inregistrare/', register_view, name='register'),
     path('autentificare/', login_view, name='login'),
     path('deconectare/', logout_view, name='logout'),

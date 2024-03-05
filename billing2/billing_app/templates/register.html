@@ -6,7 +6,7 @@
     <h2>Inregistrare utilizator nou.</h2>
     <form method="post" action="{% url 'register' %}" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
         <input type="submit" value="Inregistrare">
     </form>
 {% endblock %}

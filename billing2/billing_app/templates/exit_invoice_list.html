@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
-{% block title %} BillingApp - Firma ta {% endblock %}
+{% block title %} BillingApp - Facturi iesire {% endblock %}
 {% load crispy_forms_tags %}
 
 {% block content %}
     {% if request.user.is_authenticated %}
         {% if invoices %}
-            <h2>Lista facturilor de iesire:</h2>
+            <div class="alert alert-dark" role="alert">
+            <i><h2>Lista facturilor de iesire:</h2></i>
+            </div>
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -31,7 +33,9 @@
             {% endfor %}
                 </table>
         {% else %}
-            <h2>Nu aveti nicio factura de iesire inregistrata.</h2>
+        <div class="alert alert-dark" role="alert">
+            <i><h2>Nu aveti nicio factura de iesire inregistrata.</h2></i>
+        </div>
         {% endif %}
     {% else %}
         <h1>Ups, nu ai voie aici...</h1>

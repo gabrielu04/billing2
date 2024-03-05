@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
-{% block title %} BillingApp - Firma ta {% endblock %}
+{% block title %} BillingApp - Lista parteneri {% endblock %}
 {% load crispy_forms_tags %}
 
 {% block content %}
     {% if request.user.is_authenticated %}
         {% if partners %}
-            <h2>Lista partenerilor dumneavoastra:</h2>
+            <div class="alert alert-dark" role="alert">
+            <i><h2>Lista partenerilor dumneavoastra:</h2></i>
+            </div>
                 <table class="table table-striped table-hover">
             {% for partner in partners %}
                    <tr>
@@ -20,7 +22,9 @@
             {% endfor %}
                 </table>
         {% else %}
-            <h2>Lista partenerilor este goala.</h2>
+        <div class="alert alert-dark" role="alert">
+            <i><h2>Lista partenerilor este goala.</h2></i>
+        </div>
         {% endif %}
         <a href="{% url 'partner_add' %}" class="btn btn-outline-success btn-sm">Adauga partener</a>
     {% else %}

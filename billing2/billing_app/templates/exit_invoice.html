@@ -1,32 +1,61 @@
 {% extends 'base.html' %}
-{% block title %} BillingApp - Emitere - factura intrare {% endblock %}
+{% block title %} BillingApp - Emitere - factura iesire {% endblock %}
 {% load crispy_forms_tags %}
 
 {% block content %}
     {% if request.user.is_authenticated %}
-        <h2>Completati datele facturii de iesire.</h2>
+        <div class="alert alert-dark" role="alert">
+            <i><h2>Completati datele facturii de iesire.</h2></i>
+        </div>
+        <br>
         <form method="post" action="{% url 'exit_invoice' %}" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
-            {% if form_2 %}
-                <b><p>Client</p></b>
-                {{ form_2.as_p }}
-            {% endif %}
-            <b><p>Furnizor</p></b>
-            {% for company in your_company %}
-                <p>Nume: {{ company.nume }}</p>
-                <p>CUI: {{ company.cod_fiscal }}</p>
-                <p>Nr. Inregistrare: {{ company.cod_onrc }}</p>
-                {% if company.address_other_info == None %}
-                <p>Adresa: judetul {{ company.judet }}, loc. {{ company.localitate }}, str. {{ company.street }}, nr. {{ company.street_no }}</p>
-                {% else %}
-                <p>Adresa: judetul {{ company.judet }}, loc. {{ company.localitate }}, str. {{ company.street }}, nr. {{ company.street_no }}, {{ company.address_other_info }}</p>
-                {% endif %}
+            <div align="center">
+                Serie: {{ form.series }}
+                Nr: {{ form.number }}
+            </div>
+            <br>
+            <div align="center">Data: {{ form.date }}</div>
+           <div class="parent">
+            <div class="child" align="left">
+                <b>Client</b><br>
+                <i>Nume:</i> {{ form_2.nume }}<br>
+                <i>CUI:</i> {{ form_2.cod_fiscal }}<br>
+                <i>Nr. Inregistrare:</i> {{ form_2.cod_onrc }}<br>
+                <i>Adresa:</i> {{ form_2.adresa }}
+            </div>
+            <div class="child" align="right">
+                <b>Furnizor</b><br>
+                {% for company in your_company %}
+                    <i>Nume:</i> {{ company.nume }}<br>
+                    <i>CUI:</i> {{ company.cod_fiscal }}<br>
+                    <i>Nr. Inregistrare:</i> {{ company.cod_onrc }}<br>
+                    {% if company.address_other_info == None %}
+                    <i>Adresa:</i> judetul {{ company.judet }}, loc. {{ company.localitate }}, str. {{ company.street }}, nr. {{ company.street_no }}<br>
+                    {% else %}
+                    <i>Adresa:</i> judetul {{ company.judet }}, loc. {{ company.localitate }}, str. {{ company.street }}, nr. {{ company.street_no }}, {{ company.address_other_info }}
+                    {% endif %}
             {% empty %}
-                <p>Completati datele firmei dumneavoastra <a href="{% url 'user_company' %}">aici</a> </p>
+                Completati datele firmei dumneavoastra <a href="{% url 'user_company' %}">aici</a>
             {% endfor %}
-            <input type="submit" value="Salveaza" class="btn btn-outline-secondary btn-sm">
+                </div>
+           </div>
+            <br>
+           <div>
+                Bun/serviciu: {{ form.product_name }}
+                Pret unitar: {{ form.price }}
+                UM: {{ form.unit }}
+                Cantitate: {{ form.quantity }}<br><br>
+                Valoare: {{ form.price_quantity }}
+                Cota TVA (%): {{ form.vat_rate }}
+                TVA: {{ form.vat_ammount }}
+                Total de plata: {{ form.total_pay }}
+            </div>
+            <br>
+            <div align="right">
+            <input type="submit" value="Salveaza" class="btn btn-outline-success btn-sm">
             <a href="{% url 'home' %}" class="btn btn-outline-danger btn-sm">Anuleaza</a>
+            </div>
         </form>
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
         {{ form.media }}

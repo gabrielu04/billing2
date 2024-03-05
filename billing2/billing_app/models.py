@@ -52,12 +52,6 @@ class Invoice(models.Model):
     class Meta:
         abstract = True
 
-    # class VatRate(models.TextChoices):
-    #     COTA_STANDARD = 0.19, 19
-    #     COTA_9 = 0.09, 9
-    #     COTA_5 = 0.05, 5
-    #     COTA_0 = 0, 0
-
     series = models.CharField(max_length=5)
     number = models.IntegerField(unique=True)
     date = models.DateField()
