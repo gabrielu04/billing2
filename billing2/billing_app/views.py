@@ -1,9 +1,12 @@
 from django.contrib import auth, messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render, reverse
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 
 from .forms import LoginForm, RegisterForm, UserCompanyForm, EntryInvoiceForm, ExitInvoiceForm, PartnerForm
 from .models import YourCompany, Partners, EntryInvoice, ExitInvoice
+from .serializers import YourCompanySerializer
 
 
 AuthUser = auth.get_user_model()
@@ -264,3 +267,10 @@ def partner_add_view(request):
             return redirect(reverse("partners"))
 
     return render(request, "partner_add.html", {"form": form})
+
+
+class YourCompanyViewSet(viewsets.ModelViewSet):
+    queryset = YourCompany.objects.all()
+    serializer_class = YourCompanySerializer
+    permission_classes = (IsAuthenticated,)
+

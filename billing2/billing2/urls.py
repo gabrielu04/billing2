@@ -18,6 +18,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
+from rest_framework import routers
+from rest_framework_simplejwt import views as jwt_views
 
 from billing_app.views import home_view
 from billing_app.views import login_view
@@ -38,7 +41,11 @@ from billing_app.views import entry_invoice_delete_view
 from billing_app.views import exit_invoice_list_view
 from billing_app.views import exit_invoice_edit_view
 from billing_app.views import exit_invoice_delete_view
+from billing_app.views import YourCompanyViewSet
 
+
+router = routers.DefaultRouter()
+router.register(r'user-companies', YourCompanyViewSet, 'user-companies')
 
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
@@ -61,6 +68,10 @@ urlpatterns = [
     path('facturi/iesire/', exit_invoice_list_view, name='exit_invoice_list'),
     path('facturi/iesire-modificare/<invoice_id>', exit_invoice_edit_view, name='exit_invoice_edit'),
     path('facturi/iesire-stergere/<invoice_id>', exit_invoice_delete_view, name='exit_invoice_delete'),
+    path('api/', include(router.urls)),
+    path('api/auth/', jwt_views.TokenObtainPairView.as_view(), name='api-auth'),
+    path('api/auth/refresh', jwt_views.TokenRefreshView.as_view(), name='api-auth-refresh'),
+
 ]
 
 if settings.DEBUG is True:
